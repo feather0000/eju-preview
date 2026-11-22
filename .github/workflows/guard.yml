@@ -1,0 +1,18 @@
+name: Guard preview repo
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  no-custom-domain:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Forbid CNAME / custom domain files
+        run: |
+          if [ -e CNAME ] || [ -e cname ]; then
+            echo "eju-preview must not have a CNAME file."
+            exit 1
+          fi
